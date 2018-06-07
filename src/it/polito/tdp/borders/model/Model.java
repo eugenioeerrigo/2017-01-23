@@ -2,6 +2,7 @@ package it.polito.tdp.borders.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class Model {
 	private List<Country> countries;
 	private Map<Integer, Country> cmap;
 	
+	private Simulator sim;
+	
 	public Model() {
 		
 	}
@@ -27,7 +30,7 @@ public class Model {
 		this.graph = new SimpleGraph<>(DefaultEdge.class);
 		
 		BordersDAO dao = new BordersDAO();
-		countries = dao.getCountryByYear(anno);
+		countries = dao.getCountryByYear(anno);    //ORDER BY Nome dello stato (alfabetico)
 		cmap = new HashMap<>();
 		for(Country cc : countries)
 			cmap.put(cc.getcCode(),  cc);
@@ -54,5 +57,44 @@ public class Model {
 		Collections.sort(list);
 		return list;
 	}
+
+	public List<Country> getCountries() {
+		return countries;         //ho modificato il metodo del dao che popola la lista per averla ordinata (alfabet.)
+	}
+
+	public void simula(Country partenza) {
+
+		sim = new Simulator();
+		
+		sim.init(graph, partenza);
+		sim.run();
+		
+	}
+
+	public int getTsimulazione() {
+		return sim.getT();
+	}
+
+	public List<CountryAndNumber> getCountriesStanziali() {
+		Map<Country, Integer> map = sim.getStanziali();
+		List<CountryAndNumber> stanziali = new ArrayList<>();
+		
+		for(Country c : map.keySet())
+			stanziali.add(new CountryAndNumber(c, map.get(c)));
+		
+		Collections.sort(stanziali, new Comparator<CountryAndNumber>() {
+
+			@Override
+			public int compare(CountryAndNumber arg0, CountryAndNumber arg1) {
+				
+				return -(arg0.getNumber()-arg1.getNumber());
+			}
+			
+		});
+		
+		return stanziali;
+	}
+	
+	
 
 }

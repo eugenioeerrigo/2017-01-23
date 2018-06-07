@@ -52,7 +52,8 @@ public class BordersDAO {
 	}
 	
 	public List<Country> getCountryByYear(int anno){
-		final String query = "SELECT * FROM country WHERE CCode IN (SELECT state1no FROM contiguity WHERE year<= ? AND conttype=1)";
+		final String query = "SELECT * FROM country WHERE CCode IN (SELECT state1no FROM contiguity WHERE year<= ? AND conttype=1) "
+				+ "ORDER BY StateNme ASC";    //ordinamento alfabetico per punto 2
 		
 		try {
 			Connection conn = DBConnect.getConnection() ;
