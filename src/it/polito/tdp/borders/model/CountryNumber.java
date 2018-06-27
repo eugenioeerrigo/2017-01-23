@@ -28,7 +28,7 @@ public class CountryNumber {
 	}
 	
 	public String toString() {
-		return String.format("%s %s - Stati confinanti: %d", country.getStateAbb(), country.getStateName(), number);
+		return String.format("%s %s -  %d", country.getStateAbb(), country.getStateName(), number);
 	}
 	
 }

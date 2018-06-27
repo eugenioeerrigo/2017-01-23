@@ -1,6 +1,8 @@
 package it.polito.tdp.borders.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.jgrapht.Graphs;
@@ -46,9 +48,26 @@ public class Model {
 		return vertici;
 	}
 
-	public void simula(Country start) {
+	public List<CountryNumber> simula(Country start) {
 		Simulatore sim = new Simulatore(start, this.graph);
 		sim.run();
+		
+		List<CountryNumber> stanziali = new ArrayList<>();
+		for(CountryNumber c : sim.getStanziali()) {
+			if(c.getNumber()!=0)
+				stanziali.add(c);
+		}
+		
+		Collections.sort(stanziali, new Comparator<CountryNumber>() {
+
+			@Override
+			public int compare(CountryNumber arg0, CountryNumber arg1) {
+				return -(arg0.getNumber()-arg1.getNumber());
+			}
+			
+		});
+		
+		return stanziali;
 	}
 
 }

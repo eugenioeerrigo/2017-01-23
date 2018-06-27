@@ -34,12 +34,15 @@ public class BordersController {
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
+    	txtResult.clear();
+    	boxNazione.getItems().clear();
     	
     	try {
 			int anno = Integer.parseInt(this.txtAnno.getText());
 			
 			List<CountryNumber> res = model.creaGrafo(anno);
 			
+			txtResult.appendText("---Stati e numero stati confinanti---\n");
 			for(CountryNumber c : res) {
 				txtResult.appendText(c.toString()+"\n");
 			}
@@ -59,8 +62,10 @@ public class BordersController {
     	
     	Country start = boxNazione.getValue();
     	
-    	model.simula(start);
-
+    	List<CountryNumber> results = model.simula(start);
+    	txtResult.appendText("---Stati e numero persone 'stanziali'---\n");
+    	for(CountryNumber c : results)
+    		txtResult.appendText(c.toString()+"\n");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

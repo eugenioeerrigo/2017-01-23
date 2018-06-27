@@ -1,5 +1,6 @@
 package it.polito.tdp.borders.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -17,6 +18,7 @@ public class Simulatore {
 
 	public Simulatore(Country start, SimpleGraph<Country, DefaultEdge> graph) {
 		queue = new PriorityQueue<>();
+		stanziali = new ArrayList<>();
 		this.graph = graph;
 		t = 1;
 		

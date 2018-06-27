@@ -1,6 +1,6 @@
 package it.polito.tdp.borders.model;
 
-public class Evento {
+public class Evento implements Comparable<Evento>{
 	
 	private Country Country;
 	private int time;
@@ -34,6 +34,11 @@ public class Evento {
 
 	public void setTime(int time) {
 		this.time = time;
+	}
+
+	@Override
+	public int compareTo(Evento arg0) {
+		return this.time-arg0.time;
 	}
 	
 	
