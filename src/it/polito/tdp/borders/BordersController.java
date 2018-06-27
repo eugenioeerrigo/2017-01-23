@@ -1,11 +1,12 @@
-/**
- * Skeleton for 'Borders.fxml' Controller Class
- */
-
 package it.polito.tdp.borders;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.borders.model.Country;
+import it.polito.tdp.borders.model.CountryNumber;
+import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -13,6 +14,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class BordersController {
+	
+	private Model model;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -24,18 +27,39 @@ public class BordersController {
     private TextField txtAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxNazione"
-    private ComboBox<?> boxNazione; // Value injected by FXMLLoader
+    private ComboBox<Country> boxNazione; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
 
     @FXML
     void doCalcolaConfini(ActionEvent event) {
-
+    	
+    	try {
+			int anno = Integer.parseInt(this.txtAnno.getText());
+			
+			List<CountryNumber> res = model.creaGrafo(anno);
+			
+			for(CountryNumber c : res) {
+				txtResult.appendText(c.toString()+"\n");
+			}
+			
+			boxNazione.getItems().addAll(model.getVertici());
+			
+		} catch (NumberFormatException e) {
+			txtResult.appendText("Inserisci un valore numerico valido!");
+		}
+    	
+    	
     }
 
     @FXML
     void doSimula(ActionEvent event) {
+    	txtResult.clear();
+    	
+    	Country start = boxNazione.getValue();
+    	
+    	model.simula(start);
 
     }
 
@@ -46,4 +70,9 @@ public class BordersController {
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
 
     }
+
+	public void setModel(Model model) {
+		this.model = model;
+		
+	}
 }
